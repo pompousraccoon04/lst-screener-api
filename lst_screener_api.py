@@ -3,16 +3,23 @@ from flask_cors import CORS
 import requests
 from datetime import datetime, timedelta
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
 # Tradier API Configuration
-TRADIER_API_KEY = os.environ.get("TRADIER_API_KEY", "5jkKUYdz0NqUDnSvZNrEstr3ATNd")
-TRADIER_BASE_URL = os.environ.get("TRADIER_BASE_URL", "https://api.tradier.com/v1")
+TRADIER_API_KEY = os.environ.get("TRADIER_API_KEY")
+TRADIER_BASE_URL = os.environ.get("TRADIER_BASE_URL", "https://sandbox.tradier.com/v1")
 
 if not TRADIER_API_KEY:
-    raise ValueError("TRADIER_API_KEY environment variable is required")
+    raise ValueError(
+        "TRADIER_API_KEY environment variable is required. "
+        "Create a .env file with: TRADIER_API_KEY=your_key_here"
+    )
 
 HEADERS = {
     "Authorization": f"Bearer {TRADIER_API_KEY}",
